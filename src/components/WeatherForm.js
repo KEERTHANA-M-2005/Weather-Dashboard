@@ -3,7 +3,7 @@ import axios from "axios";
 
 const WeatherForm = ({ setWeatherData, setForecastData, setLoading, setErrorMsg }) => {
   const [city, setCity] = useState("");
-  const API_KEY = "3859c05e953fcfaf3885c40bcb434207";
+  const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
 
   const getWeather = async (e) => {
     e.preventDefault();
