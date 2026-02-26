@@ -13,6 +13,8 @@ import {
 ChartJS.register(LineElement, CategoryScale, LinearScale, PointElement, Tooltip);
 
 const WeatherChart = ({ forecast }) => {
+  if (!forecast || !forecast.list) return null;
+
   const labels = forecast.list.slice(0, 8).map(f => f.dt_txt);
   const temps = forecast.list.slice(0, 8).map(f => f.main.temp);
 

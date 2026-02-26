@@ -54,7 +54,7 @@ const WeatherForm = ({ setWeatherData, setForecastData, setLoading, setErrorMsg 
         value={city}
         onChange={(e) => setCity(e.target.value)}
       />
-      <button type="submit">Get Weather</button>
+      <button type="submit" className="btn-primary">Get Weather</button>
     </form>
   );
 };

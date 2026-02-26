@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import WeatherForm from "./components/WeatherForm";
 import WeatherDisplay from "./components/WeatherDisplay";
+import WeatherChart from "./components/WeatherChart";
 import "./App.css";
 
 function App() {
@@ -73,7 +74,10 @@ function App() {
       {errorMsg && <p className="error">{errorMsg}</p>}
       {loading && <p className="loading">Loading...</p>}
       {weatherData && (
-        <WeatherDisplay data={weatherData} forecast={forecastData} />
+        <>
+          <WeatherDisplay data={weatherData} forecast={forecastData} />
+          {forecastData && <WeatherChart forecast={forecastData} />}
+        </>
       )}
       {recentCities.length > 0 && (
         <div className="recent">
