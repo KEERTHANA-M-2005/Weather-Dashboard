@@ -29,6 +29,12 @@ function App() {
       try {
         setLoading(true);
         const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
+        if (!API_KEY) {
+          console.error("REACT_APP_WEATHER_API_KEY is not defined. Set it in a .env file at the project root and restart the dev server.");
+          setErrorMsg("API key missing – please configure REACT_APP_WEATHER_API_KEY");
+          return;
+        }
+
         const { latitude, longitude } = position.coords;
 
         const [currentRes, forecastRes] = await Promise.all([
@@ -39,8 +45,13 @@ function App() {
         const currentData = await currentRes.json();
         const forecastData = await forecastRes.json();
 
-        if (currentData.cod === 200 && forecastData.cod === "200") {
+        // cod can be a number or string depending on whether it's an error or a success response,
+        // so coerce to number for comparison.
+        if (Number(currentData.cod) === 200 && Number(forecastData.cod) === 200) {
           handleSetWeather(currentData, forecastData);
+        } else {
+          console.error("Geolocation fetch returned an error:", currentData, forecastData);
+          setErrorMsg(currentData.message || "Failed to retrieve weather");
         }
       } catch (err) {
         console.error("Geolocation fetch failed.");

@@ -1,11 +1,16 @@
 import React from "react";
 
 const WeatherDisplay = ({ data, forecast }) => {
+  if (!data || !data.weather || data.weather.length === 0) {
+    // nothing sensible to render yet
+    return null;
+  }
+
   const icon = data.weather[0].icon;
 
   return (
     <div className="weather-display">
-      <h2>{data.name}, {data.sys.country}</h2>
+      <h2>{data.name}, {data.sys && data.sys.country}</h2>
       <p>{data.weather[0].main} - {data.weather[0].description}</p>
       <img src={`http://openweathermap.org/img/wn/${icon}@2x.png`} alt="Weather icon" />
       <p>🌡️ Temp: {data.main.temp}°C</p>

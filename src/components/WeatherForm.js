@@ -12,6 +12,11 @@ const WeatherForm = ({ setWeatherData, setForecastData, setLoading, setErrorMsg 
       return;
     }
 
+    if (!API_KEY) {
+      setErrorMsg("API key is missing – please add REACT_APP_WEATHER_API_KEY to your .env file.");
+      return;
+    }
+
     try {
       setLoading(true);
       setErrorMsg("");
@@ -24,6 +29,11 @@ const WeatherForm = ({ setWeatherData, setForecastData, setLoading, setErrorMsg 
           `https://api.openweathermap.org/data/2.5/forecast?q=${city}&appid=${API_KEY}&units=metric`
         )
       ]);
+
+      // check for OpenWeather error codes (API returns 200 on success, otherwise 4xx/5xx)
+      if (currentRes.data.cod && Number(currentRes.data.cod) !== 200) {
+        throw new Error(currentRes.data.message || "Unexpected API error");
+      }
 
       setWeatherData(currentRes.data);
       setForecastData(forecastRes.data);
